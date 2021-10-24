@@ -24,10 +24,10 @@ app.use(express.json());
 
  async function connection(){
    
-     //"mongodb://localhost/users";
+     
     
     
-     const url=   process.env.url ;  // "mongodb+srv://Parth:Parth123@cluster0.cxpc1.mongodb.net/users";       //    "mongodb+srv://Parth:parth@mon1@cluster0.cxpc1.mongodb.net/users"            
+     const url=   process.env.url ;        
     const client=new MongoClient(url);
   
      await client.connect();
