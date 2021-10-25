@@ -3,6 +3,7 @@ import { MongoClient } from "mongodb";
 import  express, { request, response }  from "express";
 import dotenv from "dotenv";
 
+import {getManager,getuserbyid,genPassword,createManager,createuser,deletebyid,patchbyid,getusers} from './helper.js';
 //const express=require("express");
 const app=express(); 
 
@@ -47,26 +48,32 @@ connection();
 
 
 app.get('/',(request,response)=>{
-    response.send("Hi all");
+    response.send("Hi all local");
 });
 
 
 //read users
+
 app.get('/users', async(request,response)=>{
 
     
     const client=await connection()
 
-    const users= await client.db("users").collection("P").find().toArray();
+    const users= await getusers(client);
     response.send(users);
 });
 
-// get users by id
+
+
+
+//get user by id
+
+
 app.get('/users/:id', async (request,response)=>{
     
     const  { id } =request.params;
     const client= await connection();
-    const user= await client.db("users").collection("P").findOne({id:id});
+    const user= await getuserbyid(client, id);
    
     console.log(user);
     response.send(user);
@@ -74,22 +81,62 @@ app.get('/users/:id', async (request,response)=>{
 
 
 
-//get users by query
-app.get('/users',async (request,response)=>{
-    const client= await connection();
-    const user= await client.db("users").collection("P").findOne({}).toArray();
+
+
+
+//hashing the passwords
+
+
+app.post('/Manager/signup', async (request,response)=>{
     
-    console.log(user);
-    response.send(user);
+    const client=await connection();
+    const {username,password}=request.body;
+    
+    
+    const hashpassword=  await genPassword(password);
+    //console.log(username,password)
+    const result= await createManager(client, username, hashpassword);
+
+
+    //console.log(adduser,result); 
+    response.send(result);
+
+
 });
 
-//create user
+
+
+
+
+
+//get Manager query 
+
+
+
+
+app.get('/Manager',async (request,response)=>{
+    const client= await connection();
+    const manager= await getManager(client);
+    
+    console.log(manager);
+    response.send(manager);
+});
+
+
+
+
+
+
+//create users
+
+
+
 app.post('/users', async (request,response)=>{
     
     const client=await connection();
     const adduser=request.body;
     
-    const result= await client.db("users").collection("P").insertMany(adduser);
+    const result= await createuser(client, adduser);
 
     console.log(adduser,result); 
     response.send(result);
@@ -97,26 +144,33 @@ app.post('/users', async (request,response)=>{
 
 });
 
+
+
 //Update user
+ 
+
 app.patch('/users/:id', async (request,response)=>{
 
     const {id}=request.params;
     const client=await connection();
     const modifyuser=request.body;
     
-    const result= await client.db("users").collection("P").updateOne({id:id},{$set:modifyuser});
+    const result= await patchbyid(client, id, modifyuser)
 
     console.log(modifyuser,result); 
     response.send(result);
 } );
 
+
 //delete user
+
+
 app.delete('/users/:id',async (request,response)=>{
 
     const {id}=request.params;
     const client=await connection();
    
-    const user= await client.db("users").collection("P").deleteOne({id:id});
+    const user= await deletebyid(client, id);
 
     console.log(user); 
     response.send(user);
@@ -128,6 +182,13 @@ app.delete('/users/:id',async (request,response)=>{
 
 
 
+
 app.listen(PORT,()=>{
     console.log("port is live",PORT);
 });
+
+
+
+
+
+
