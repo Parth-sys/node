@@ -1,18 +1,18 @@
 import express from 'express';
 
-import {getusers,connection,getuserbyid,createuser,patchbyid,deletebyid} from '../helper.js'
+import {getusers,connection,getuserbyid,createmovie,patchbyid,deletebyid,getmovie} from '../helper.js'
 import { auth } from '../middleware/auth.js';
 const router=express.Router();
 
 
 //read users
 
-router.get('/',auth, async(request,response)=>{
+router.get('/', async(request,response)=>{
 
     
     const client=await connection()
 
-    const users= await getusers(client);
+    const users= await getmovie(client);
     response.send(users);
 });
 
@@ -21,7 +21,7 @@ router.get('/',auth, async(request,response)=>{
 
 //get user by id
 
-
+/*
 router.get('/:id',auth, async (request,response)=>{
     
     const  { id } =request.params;
@@ -35,22 +35,22 @@ router.get('/:id',auth, async (request,response)=>{
 //create users
 
 
-
-router.post('/users',auth, async (request,response)=>{
+*/
+router.post('/',async (request,response)=>{
     
     const client=await connection();
-    const adduser=request.body;
+    const addmovie=request.body;
     
-    const result= await createuser(client, adduser);
+    const result= await createmovie(client, addmovie);
 
-    console.log(adduser,result); 
+    console.log(addmovie,result); 
     response.send(result);
 
 
 });
 
 
-
+/*
 //Update user
  
 
@@ -80,5 +80,5 @@ router.delete('/:id',auth,async (request,response)=>{
     console.log(user); 
     response.send(user);
 });
-
-export const userrouter=router
+*/
+export const movierouter=router

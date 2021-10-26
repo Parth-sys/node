@@ -65,5 +65,17 @@ async function connection(){
     return await client.db("users").collection("P").deleteOne({ id: id });
 }
 
+
+
+
+async function createmovie(client, addmovie) {
+    return await client.db("users").collection("movie").insertMany(addmovie);
+}
+
+async function getmovie(client) {
+    return await client.db("users").collection("movie").find().toArray();
+}
+
+
 export {getManager,getuserbyid,genPassword,
-    createManager,createuser,deletebyid,patchbyid,getusers,connection}
+    createManager,createuser,deletebyid,patchbyid,getusers,connection,createmovie,getmovie}

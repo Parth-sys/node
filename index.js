@@ -5,6 +5,8 @@ import dotenv from "dotenv";
 
 import {getManager,getuserbyid,genPassword,createManager,createuser,deletebyid,patchbyid,getusers,connection} from './helper.js';
 import { managerrouter } from "./routes/manager.js";
+import { userrouter } from "./routes/user.js";
+import { movierouter } from "./routes/movie.js";
 //const express=require("express");
 const app=express(); 
 
@@ -21,7 +23,8 @@ const PORT=process.env.PORT;
 
 app.use(express.json());
 app.use('/Manager',managerrouter);
-
+app.use('/users',userrouter);
+app.use('/movie',movierouter);
 
 
 
