@@ -7,6 +7,7 @@ import {getManager,getuserbyid,genPassword,createManager,createuser,deletebyid,p
 import { managerrouter } from "./routes/manager.js";
 import { userrouter } from "./routes/user.js";
 import { movierouter } from "./routes/movie.js";
+import cors from 'cors';
 //const express=require("express");
 const app=express(); 
 
@@ -22,6 +23,7 @@ const PORT=process.env.PORT;
 //third-party middlewares
 
 app.use(express.json());
+app.use(cors());
 app.use('/Manager',managerrouter);
 app.use('/users',userrouter);
 app.use('/movie',movierouter);
