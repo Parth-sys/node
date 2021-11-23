@@ -1,6 +1,6 @@
-import express from 'express';
+import express, { request, response } from 'express';
 
-import {getusers,connection,getuserbyid,createmovie,patchbyid,deletebyid,getmovie} from '../helper.js'
+import {getusers,connection,getuserbyid,createmovie,patchbyid,deletebyid,getmovie,createtheatre,getTheatre,patchbyidfortheatre} from '../helper.js'
 import { auth } from '../middleware/auth.js';
 const router=express.Router();
 
@@ -48,6 +48,44 @@ router.post('/',async (request,response)=>{
 
 
 });
+
+
+router.get('/gettheatre',async(request,response)=>{
+    const client= await connection();
+    const talkies= await getTheatre(client)
+    
+    console.log(talkies)
+    response.send(talkies);
+  })
+
+
+
+router.post('/theatre',async(request,response)=>{
+
+    const client=await connection();
+    const addtheatre=request.body;
+    const result=await createtheatre(client,addtheatre)
+    console.log(addtheatre,result);
+    response.send(result);
+  
+  })
+
+
+
+  router.patch('/theatre/:id', async (request,response)=>{
+
+    const {id}=request.params;
+    const client=await connection();
+    const modifytheatre=request.body;
+    
+    const result= await patchbyidfortheatre(client, id, modifytheatre)
+
+    console.log(modifytheatre,result); 
+    response.send(result);
+} );
+
+
+
 
 
 /*

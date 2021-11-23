@@ -72,10 +72,27 @@ async function createmovie(client, addmovie) {
     return await client.db("users").collection("movie").insertMany(addmovie);
 }
 
+
+async function createtheatre(client,addtheatre){
+    return await client.db("users").collection("theatre").insertMany(addtheatre);
+}
+
+
+async function getTheatre(client) {
+    return await client.db("users").collection("theatre").find().toArray()
+}
+
+
 async function getmovie(client) {
     return await client.db("users").collection("movie").find().toArray();
 }
 
+async function patchbyidfortheatre(client, id, modifytheatre) {
+    return await client.db("users").collection("theatre").updateOne({ id: id }, { $set: modifytheatre });
+}
+
+
 
 export {getManager,getuserbyid,genPassword,
-    createManager,createuser,deletebyid,patchbyid,getusers,connection,createmovie,getmovie}
+    createManager,createuser,deletebyid,patchbyid,getusers,
+    connection,createmovie,getmovie,createtheatre,getTheatre,patchbyidfortheatre}

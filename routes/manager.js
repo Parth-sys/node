@@ -3,9 +3,11 @@ import {genPassword,connection,createManager,getManager} from '../helper.js';
 import express from 'express';
 import  jwt  from 'jsonwebtoken'; 
 import bcrypt from "bcrypt";
+import { auth } from '../middleware/auth.js';
 
 const router=express.Router();
 //create Manger
+
 router.post('/signup', async (request,response)=>{
     
     const client=await connection();
@@ -34,10 +36,15 @@ router.post('/Login', async (request,response)=>{
 //const hashpassword=  await genPassword(password);
     //console.log(username,password)
     const result= await client.db('users').collection('Managers').findOne({username:username});
-
+     
    const storedpass=result.password
    const isMatch= await bcrypt.compare(password,storedpass); 
-   //console.log(adduser,result); 
+  
+   //console.log(adduser,result);
+   
+   
+
+
      if(isMatch){
 
          const token=jwt.sign({id:result._id},process.env.SECRET_KEY) //jwt token
@@ -49,6 +56,9 @@ router.post('/Login', async (request,response)=>{
      }
 
 });
+
+
+
 
 
 
