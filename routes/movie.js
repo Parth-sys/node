@@ -50,9 +50,11 @@ router.post('/',async (request,response)=>{
 });
 
 
-router.get('/gettheatre',async(request,response)=>{
+router.get('/gettheatre/:location',async(request,response)=>{
+
+    const{location}=request.params;
     const client= await connection();
-    const talkies= await getTheatre(client)
+    const talkies= await getTheatre(client,location)
     
     console.log(talkies)
     response.send(talkies);

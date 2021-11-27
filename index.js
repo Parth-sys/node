@@ -8,6 +8,7 @@ import { managerrouter } from "./routes/manager.js";
 import { userrouter } from "./routes/user.js";
 import { movierouter } from "./routes/movie.js";
 import cors from 'cors';
+import { roomrouter } from "./routes/room.js";
 
 
 //const express=require("express");
@@ -33,7 +34,7 @@ app.use(cors());
 app.use('/Manager',managerrouter);
 app.use('/users',userrouter);
 app.use('/movie',movierouter);
-
+app.use('/room',roomrouter);
 
 
 
@@ -213,9 +214,11 @@ app.post('/theatre',async(request,response)=>{
 
 })
 
-app.get('/gettheatre',async(request,response)=>{
+app.get('/gettheatre/:location',async(request,response)=>{
+  const {location}=request.params;
+
   const client= await connection();
-  const talkies= await getTheatre(client)
+  const talkies= await getTheatre(client,location)
   
   console.log(talkies)
   response.send(talkies);

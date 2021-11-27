@@ -68,6 +68,9 @@ async function connection(){
 
 
 
+
+
+
 async function createmovie(client, addmovie) {
     return await client.db("users").collection("movie").insertMany(addmovie);
 }
@@ -78,8 +81,8 @@ async function createtheatre(client,addtheatre){
 }
 
 
-async function getTheatre(client) {
-    return await client.db("users").collection("theatre").find().toArray()
+async function getTheatre(client,location) {
+    return await client.db("users").collection("theatre").findOne({location:location});
 }
 
 
@@ -92,7 +95,21 @@ async function patchbyidfortheatre(client, id, modifytheatre) {
 }
 
 
+//hallbooking api
+
+
+async function saveroom(client,addroom){
+    return await client.db('users').collection("room").insertMany(addroom);
+}
+
+
+
+
+
+
+
+
 
 export {getManager,getuserbyid,genPassword,
     createManager,createuser,deletebyid,patchbyid,getusers,
-    connection,createmovie,getmovie,createtheatre,getTheatre,patchbyidfortheatre}
+    connection,createmovie,getmovie,createtheatre,getTheatre,patchbyidfortheatre,saveroom}
